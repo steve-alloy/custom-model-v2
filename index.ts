@@ -17,6 +17,7 @@ app.use(express.json());
 app.post("/", (req: Request, res: Response) => {
     const attributes = req.body[ACCOUNT_NAME];
     console.log(attributes);
+    console.log(req);
     // //Note to make this more programmatic
     // const sentilinkScore: number = parseInt(attributes.find((obj: Scores) => obj.attributeName === "sentilink").attributeValue);
     // const socureScore: number = parseInt(attributes.find((obj: Scores) => obj.attributeName === "socure_risk_score").attributeValue);
