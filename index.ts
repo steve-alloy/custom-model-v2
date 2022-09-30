@@ -27,6 +27,7 @@ app.post("/", (req: Request, res: Response) => {
 
     console.log("ALL DATA:", req);
     console.log("Model Score:", modelScore);
+    console.log("Account Meta:", attributes);
     console.log("Account Data Supplied:", dataSuplied);
     console.log("Supplied Value:", suppliedValue);
 
