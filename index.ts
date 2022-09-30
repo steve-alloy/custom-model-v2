@@ -18,9 +18,9 @@ app.post("/", (req: Request, res: Response) => {
     const attributes = req.body[ACCOUNT_NAME];
     const socureData = req.body["Socure3"]
 
-    const sigmaFraudScore: nuber = parseInt(socureData.filter(data => data.attributeName === "Sigma Fraud Score")[0].attributeValue);
+    const sigmaFraudScore: number = parseInt(socureData.filter(data => data.attributeName === "Sigma Fraud Score")[0].attributeValue);
 
-    const otherRiskScore: nuber = parseInt(attributes.filter(data => data.attributeName === "other_data_risk_score")[0].attributeValue);
+    const otherRiskScore: number = parseInt(attributes.filter(data => data.attributeName === "other_data_risk_score")[0].attributeValue);
 
     console.log(req);
     const modelScore: number = sigmaFraudScore * otherRiskScore;
