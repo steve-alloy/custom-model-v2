@@ -15,7 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/", (req: Request, res: Response) => {
-
     const attributes = req.body[ACCOUNT_NAME + " Meta"];
     const dataSuplied = req.body[ACCOUNT_NAME + " Data Supplied"];
     const suppliedValue = req.body[ACCOUNT_NAME + " Supplied Value"];
@@ -26,6 +25,7 @@ app.post("/", (req: Request, res: Response) => {
 
     const modelScore: number = sigmaFraudScore * otherRiskScore;
 
+    console.log("ALL DATA:", req);
     console.log("Model Score:", modelScore);
     console.log("Account Data Supplied:", dataSuplied);
     console.log("Supplied Value:", suppliedValue);
