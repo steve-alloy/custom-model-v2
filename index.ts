@@ -4,7 +4,7 @@ import { Scores } from "./types/index";
 
 dotenv.config();
 
-const CURRENT_VERSION = 2;
+const CURRENT_VERSION = 3;
 const ACCOUNT_NAME = "Steve G. Test Account Meta";
 
 const port: string | number = process.env.PORT || 3000;
@@ -15,21 +15,23 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/", (req: Request, res: Response) => {
-    const attributes = req.body[ACCOUNT_NAME];
-    const socureData = req.body["Socure3"]
-
-    const sigmaFraudScore: number = parseInt(socureData.filter(data: Scores => data.attributeName === "Sigma Fraud Score")[0].attributeValue);
-
-    const otherRiskScore: number = parseInt(attributes.filter(data: Scores => data.attributeName === "other_data_risk_score")[0].attributeValue);
-
     console.log(req);
+    const attributes = req.body[ACCOUNT_NAME];
+    const socureData = req.body["Socure3"];
+
+    const sigmaFraudScore: number = parseInt(socureData.find((obj: Scores) => obj.attributeName === "Sigma Fraud Score").attributeValue);
+    const otherRiskScore: number = parseInt(attributes.find((obj: Scores) => obj.attributeName === "other_data_risk_score").attributeValue);
+
     const modelScore: number = sigmaFraudScore * otherRiskScore;
-    console.log(`Model score is: ${modelScore}!`);
 
     res.json({
         modelScore,
         "modelSuccess": !!modelScore,
-        "modelVersion": CURRENT_VERSION
+        "modelVersion": CURRENT_VERSION,
+        "custom": {
+            "riskLevel": "HIGH",
+            "isRisk": true
+        }
     });
 });
 
