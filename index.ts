@@ -17,14 +17,13 @@ app.use(express.json());
 app.post("/", (req: Request, res: Response) => {
     const attributes = req.body[ACCOUNT_NAME];
     const socureData = req.body["Socure3"]
-    console.log("Attributes:", attributes);
-    console.log("Socure3:", socureData);
-    // //Note to make this more programmatic
-    // const sentilinkScore: number = parseInt(attributes.find((obj: Scores) => obj.attributeName === "sentilink").attributeValue);
-    // const socureScore: number = parseInt(attributes.find((obj: Scores) => obj.attributeName === "socure_risk_score").attributeValue);
 
-    // const modelScore: number = sentilinkScore + socureScore;
-    const modelScore = 200;
+    const sigmaFraudScore: nuber = parseInt(socureData.filter(data => data.attributeName === "Sigma Fraud Score")[0].attributeValue);
+
+    const otherRiskScore: nuber = parseInt(attributes.filter(data => data.attributeName === "other_data_risk_score")[0].attributeValue);
+
+    console.log(req);
+    const modelScore: number = sigmaFraudScore * otherRiskScore;
     console.log(`Model score is: ${modelScore}!`);
 
     res.json({
