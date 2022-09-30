@@ -15,6 +15,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.post("/", (req: Request, res: Response) => {
+
+    enum RiskLevel {
+        High = "HIGH",
+        Medium = "MEDIUM",
+        Low = "LOW"
+    }
+
     const attributes = req.body[ACCOUNT_NAME + " Meta"];
     const dataSuplied = req.body[ACCOUNT_NAME + " Data Supplied"];
     const suppliedValue = req.body[ACCOUNT_NAME + " Supplied Value"];
@@ -31,13 +38,23 @@ app.post("/", (req: Request, res: Response) => {
     console.log("Account Data Supplied:", dataSuplied);
     console.log("Supplied Value:", suppliedValue);
 
+    let riskLevel: string;
+
+    if (modelScore <= 50) {
+        riskLevel = RiskLevel.Low;
+    } else if (modelScore >= 90) {
+        riskLevel = RiskLevel.High;
+    } else {
+        riskLevel = RiskLevel.Medium;
+    }
+
     res.json({
         modelScore,
         "modelSuccess": !!modelScore,
         "modelVersion": CURRENT_VERSION,
         "custom": {
-            "riskLevel": "HIGH",
-            "isRisk": true
+            "riskLevel": riskLevel,
+            "isRisk": modelScore >= 75
         }
     });
 });
